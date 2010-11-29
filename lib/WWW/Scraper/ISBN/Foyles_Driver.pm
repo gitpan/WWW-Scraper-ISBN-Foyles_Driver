@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use vars qw($VERSION @ISA);
-$VERSION = '0.01';
+$VERSION = '0.02';
 
 #--------------------------------------------------------------------------
 
@@ -104,8 +104,7 @@ sub search {
 
 
     my $content = $mech->content;
-    my ($link) = $content =~ m!<a href="(/Public/Shop/Detail.aspx\?itemId=\d+)"[^>]+><img src="/ImageDownload.aspx\?isbn=$ean[^"]+"!si;
-
+    my ($link) = $content =~ m!<a href="(/Public/Shop/Detail.aspx\?[^"]+term=$ean[^"]+)"[^>]+><img src="/ImageDownload.aspx\?isbn=$ean[^"]+"!si;
 
 #print STDERR "\n# link=[$link]\n";
 #print STDERR "\n# content1=[\n$content\n]\n";
@@ -115,8 +114,8 @@ sub search {
 	return $self->handler("Failed to find that book on the Foyles website. [$isbn]")
 		if(!$link || $content =~ m!No search results!si);
 
-    $link = REFERER . $link;
-    eval { $mech->get( $link ) };
+    eval { $mech->follow_link( url_regex => qr!/Public/Shop/Detail.aspx\?[^"]+term=$ean[^"]+!i ) };
+#print STDERR "\n# error=[$@]\n";
     return $self->handler("The Foyles website appears to be unavailable.")
 	    if($@ || !$mech->success() || !$mech->content());
 
@@ -143,7 +142,10 @@ sub search {
     $data->{thumb} = REFERER . "/ImageDownload.aspx?isbn=$ean&size=Small&type=Books";
     $data->{isbn10} = $self->convert_to_isbn10($ean);
 
-    $data->{publisher} =~ s/&#0?39;/'/g;
+    for(qw(publisher)) {
+        next    unless($data->{$_});
+        $data->{$_} =~ s/&#0?39;/'/g;
+    }
 
 #use Data::Dumper;
 #print STDERR "\n# " . Dumper($data);
@@ -159,6 +161,8 @@ sub search {
         $data->{$_} =~ s/\s+$//;
     }
 
+    my @parts = $link =~ m!(/Public/Shop/Detail.aspx\?)[^"]*(itemid=\d+)[^"]*!i;
+
 	my $bk = {
 		'ean13'		    => $data->{isbn13},
 		'isbn13'		=> $data->{isbn13},
@@ -166,7 +170,7 @@ sub search {
 		'isbn'			=> $data->{isbn13},
 		'author'		=> $data->{author},
 		'title'			=> $data->{title},
-		'book_link'		=> $link,
+		'book_link'		=> REFERER . $parts[0] . $parts[1],
 		'image_link'	=> $data->{image},
 		'thumb_link'	=> $data->{thumb},
 		'description'	=> $data->{description},
