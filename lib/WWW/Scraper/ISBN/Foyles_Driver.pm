@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use vars qw($VERSION @ISA);
-$VERSION = '0.02';
+$VERSION = '0.03';
 
 #--------------------------------------------------------------------------
 
@@ -92,6 +92,8 @@ sub search {
     $mech->add_header( 'Accept-Encoding' => undef );
 
     eval { $mech->get( REFERER ) };
+    return $self->handler("The Foyles website appears to be unavailable.")
+	    if($@ || !$mech->success() || !$mech->content());
 
     $mech->form_name( 'aspnetForm' );
     $mech->field( 'ctl00$txtTerm', $ean );

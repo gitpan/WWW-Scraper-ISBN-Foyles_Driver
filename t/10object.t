@@ -70,7 +70,7 @@ SKIP: {
     }
 
     for my $isbn (keys %tests) {
-        $record = $scraper->search($isbn);
+        eval { $record = $scraper->search($isbn) };
         my $error  = $record->error || '';
 
         SKIP: {

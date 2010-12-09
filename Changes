@@ -1,8 +1,11 @@
 Revision history for Perl extension WWW-Scraper-ISBN-Foyles_Driver.
 
-0.02	29/11/2010
+0.03    09/12/2010
+        - added missing website access check.
+
+0.02    29/11/2010
         - fix to field cleanup code for non-existent field values.
         - update to carry through cookie information.
 
-0.01	18/11/2010
+0.01    18/11/2010
         - initial release
