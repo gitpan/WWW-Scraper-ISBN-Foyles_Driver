@@ -71,7 +71,11 @@ SKIP: {
 
     for my $isbn (keys %tests) {
         eval { $record = $scraper->search($isbn) };
-        my $error  = $record->error || '';
+        my $error  = $@ || $record->error || '';
+
+        unless($record) {
+            diag("Failed to create record: $error");
+        }
 
         SKIP: {
             skip "Website unavailable", scalar(@{ $tests{$isbn} }) + 2   

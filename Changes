@@ -1,5 +1,9 @@
 Revision history for Perl extension WWW-Scraper-ISBN-Foyles_Driver.
 
+0.04    28/06/2011
+        - upgraded to Test::CPAN::Meta::JSON for tests.
+        - additional test in the event of record creation failure.
+
 0.03    09/12/2010
         - added missing website access check.
 
