@@ -12,34 +12,34 @@ my $CHECK_DOMAIN    = 'www.google.com';
 
 my %tests = (
     '1558607013' => [
-        [ 'is',     'isbn',         '9781558607019'     ],
-        [ 'is',     'isbn10',       '1558607013'        ],
-        [ 'is',     'isbn13',       '9781558607019'     ],
-        [ 'is',     'ean13',        '9781558607019'     ],
-        [ 'is',     'title',        'Higher-Order Perl: Transforming Programs with Programs'            ],
-        [ 'is',     'author',       'Mark Jason Dominus'   ],
-        [ 'is',     'publisher',    'Elsevier Science & Technology'    ],
-        [ 'is',     'pubdate',      '10/12/2004' ],
-        [ 'is',     'binding',      'Paperback'         ],
-        [ 'is',     'image_link',   'http://www.foyles.co.uk/ImageDownload.aspx?isbn=9781558607019&size=Large&type=Books' ],
-        [ 'is',     'thumb_link',   'http://www.foyles.co.uk/ImageDownload.aspx?isbn=9781558607019&size=Small&type=Books' ],
+        [ 'is',     'isbn',         '9781558607019'                 ],
+        [ 'is',     'isbn10',       '1558607013'                    ],
+        [ 'is',     'isbn13',       '9781558607019'                 ],
+        [ 'is',     'ean13',        '9781558607019'                 ],
+        [ 'is',     'title',        'Higher-Order Perl: Transforming Programs with Programs'    ],
+        [ 'is',     'author',       'Mark Jason Dominus'            ],
+        [ 'is',     'publisher',    'Elsevier Science & Technology' ],
+        [ 'is',     'pubdate',      '28/03/2005'                    ],
+        [ 'is',     'binding',      'Paperback'                     ],
+        [ 'like',   'image_link',   qr|http://images.foyles.co.uk/large/books/img[/\d]+.jpg|    ],
+        [ 'like',   'thumb_link',   qr|http://images.foyles.co.uk/large/books/img[/\d]+.jpg|    ],
         [ 'like',   'description',  qr|Most Perl programmers were originally trained as C and Unix programmers,| ],
-        [ 'is',     'book_link',    q|http://www.foyles.co.uk/Public/Shop/Detail.aspx?itemId=3860356| ]
+        [ 'is',     'book_link',    q|http://www.foyles.co.uk/witem/computing-it/higherorder-perl-transforming,mark-jason-dominus-9781558607019| ]
     ],
     '9780571239566' => [
-        [ 'is',     'isbn',         '9780571239566'     ],
-        [ 'is',     'isbn10',       '0571239560'        ],
-        [ 'is',     'isbn13',       '9780571239566'     ],
-        [ 'is',     'ean13',        '9780571239566'     ],
-        [ 'is',     'title',        'Touching from a Distance'  ],
-        [ 'is',     'author',       'Deborah Curtis'    ],
-        [ 'is',     'publisher',    'Faber and Faber'   ],
-        [ 'is',     'pubdate',      '04/10/2007'   ],
-        [ 'is',     'binding',      'Paperback'         ],
-        [ 'is',     'image_link',   'http://www.foyles.co.uk/ImageDownload.aspx?isbn=9780571239566&size=Large&type=Books' ],
-        [ 'is',     'thumb_link',   'http://www.foyles.co.uk/ImageDownload.aspx?isbn=9780571239566&size=Small&type=Books' ],
+        [ 'is',     'isbn',         '9780571239566'                 ],
+        [ 'is',     'isbn10',       '0571239560'                    ],
+        [ 'is',     'isbn13',       '9780571239566'                 ],
+        [ 'is',     'ean13',        '9780571239566'                 ],
+        [ 'is',     'title',        'Touching from a Distance'      ],
+        [ 'is',     'author',       'Deborah Curtis'                ],
+        [ 'is',     'publisher',    'Faber and Faber'               ],
+        [ 'is',     'pubdate',      '04/10/2007'                    ],
+        [ 'is',     'binding',      'Paperback'                     ],
+        [ 'like',   'image_link',   qr|http://images.foyles.co.uk/large/books/img[/\d]+.jpg|    ],
+        [ 'like',   'thumb_link',   qr|http://images.foyles.co.uk/large/books/img[/\d]+.jpg|    ],
         [ 'like',   'description',  qr|Ian Curtis left behind a legacy rich in artistic genius| ],
-        [ 'is',     'book_link',    q|http://www.foyles.co.uk/Public/Shop/Detail.aspx?itemId=4431058| ]
+        [ 'is',     'book_link',    q|http://www.foyles.co.uk/witem/biography/touching-from-a-distance,deborah-curtis-9780571239566| ]
     ],
 );
 
@@ -90,6 +90,7 @@ SKIP: {
             is($record->found,1);
             is($record->found_in,$DRIVER);
 
+            my $fail = 0;
             my $book = $record->book;
             for my $test (@{ $tests{$isbn} }) {
                 if($test->[0] eq 'ok')          { ok(       $book->{$test->[1]},             ".. '$test->[1]' found [$isbn]"); } 
@@ -98,10 +99,10 @@ SKIP: {
                 elsif($test->[0] eq 'like')     { like(     $book->{$test->[1]}, $test->[2], ".. '$test->[1]' found [$isbn]"); } 
                 elsif($test->[0] eq 'unlike')   { unlike(   $book->{$test->[1]}, $test->[2], ".. '$test->[1]' found [$isbn]"); }
 
+                $fail = 1   unless(defined $book->{$test->[1]} || ($test->[0] ne 'ok' && !defined $test->[2]));
             }
 
-            #use Data::Dumper;
-            #diag("book=[".Dumper($book)."]");
+            diag("book=[".Dumper($book)."]")    if($fail);
         }
     }
 }

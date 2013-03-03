@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use vars qw($VERSION @ISA);
-$VERSION = '0.04';
+$VERSION = '0.05';
 
 #--------------------------------------------------------------------------
 
@@ -104,23 +104,6 @@ sub search {
     return $self->handler("The Foyles website appears to be unavailable.")
 	    if($@ || !$mech->success() || !$mech->content());
 
-
-    my $content = $mech->content;
-    my ($link) = $content =~ m!<a href="(/Public/Shop/Detail.aspx\?[^"]+term=$ean[^"]+)"[^>]+><img src="/ImageDownload.aspx\?isbn=$ean[^"]+"!si;
-
-#print STDERR "\n# link=[$link]\n";
-#print STDERR "\n# content1=[\n$content\n]\n";
-#print STDERR "\n# is_html=".$mech->is_html().", content type=".$mech->content_type()."\n";
-#print STDERR "\n# dump headers=".$mech->dump_headers."\n";
-
-	return $self->handler("Failed to find that book on the Foyles website. [$isbn]")
-		if(!$link || $content =~ m!No search results!si);
-
-    eval { $mech->follow_link( url_regex => qr!/Public/Shop/Detail.aspx\?[^"]+term=$ean[^"]+!i ) };
-#print STDERR "\n# error=[$@]\n";
-    return $self->handler("The Foyles website appears to be unavailable.")
-	    if($@ || !$mech->success() || !$mech->content());
-
 	# The Book page
     my $html = $mech->content();
 
@@ -132,17 +115,17 @@ sub search {
 #print STDERR "\n# content2=[\n$html\n]\n";
 
     my $data;
-    ($data->{title})            = $html =~ m!<div class="MiddleArea">\s*<div class="Title">([^<]+)</div>!si;
-    ($data->{author})           = $html =~ m!<div class="Author"><a class="Author" href="[^"]+">([^<]+)</a>!si;
-    ($data->{binding})          = $html =~ m!<li>Type:\s*([^<]+)</li>([^<]+)!si;
-    ($data->{publisher})        = $html =~ m!<li>Publisher:\s*([^<]+)</li>!si;
-    ($data->{pubdate})          = $html =~ m!<li>Publication date:\s*([^<]+)</li>!si;
-    ($data->{isbn13})           = $html =~ m!<li>ISBN-13:\s*([^<]+)</li>!si;
-    ($data->{description})      = $html =~ m{<!-- Synopsis -->\s*<p>([^<]+)}si;
+    ($data->{title})        = $html =~ m!<div class="BookTitle">\s*<span itemprop="name">([^<]+)</span>!si;
+    ($data->{author})       = $html =~ m!<div class="Author">\s*<a class="Author" href="[^"]+">([^<]+)</a>!si;
+    ($data->{binding})      = $html =~ m!<span class="ListItem">Type: <strong>([^<]+)</strong></span>!si;
+    ($data->{publisher})    = $html =~ m!<span class="ListItem">Publisher: <strong><span itemprop="brand">([^<]+)</span></strong></span>!si;
+    ($data->{pubdate})      = $html =~ m!<span class="ListItem">Publication Date: <strong>([^<]+)</strong></span>!si;
+    ($data->{isbn13})       = $html =~ m!<span class="ListItem">ISBN-13: <strong><span itemprop="identifier" content="isbn:([^"]+)">!si;
+    ($data->{description})  = $html =~ m!<span itemprop="description">([^<]+)!si;
+    ($data->{image})        = $html =~ m!<div class="BookCover">\s*<img.*?src="([^"]+)"[^>]+>!;
 
-    $data->{image} = REFERER . "/ImageDownload.aspx?isbn=$ean&size=Large&type=Books";
-    $data->{thumb} = REFERER . "/ImageDownload.aspx?isbn=$ean&size=Small&type=Books";
-    $data->{isbn10} = $self->convert_to_isbn10($ean);
+    $data->{thumb}          = $data->{image};
+    $data->{isbn10}         = $self->convert_to_isbn10($ean);
 
     for(qw(publisher)) {
         next    unless($data->{$_});
@@ -163,8 +146,6 @@ sub search {
         $data->{$_} =~ s/\s+$//;
     }
 
-    my @parts = $link =~ m!(/Public/Shop/Detail.aspx\?)[^"]*(itemid=\d+)[^"]*!i;
-
 	my $bk = {
 		'ean13'		    => $data->{isbn13},
 		'isbn13'		=> $data->{isbn13},
@@ -172,7 +153,7 @@ sub search {
 		'isbn'			=> $data->{isbn13},
 		'author'		=> $data->{author},
 		'title'			=> $data->{title},
-		'book_link'		=> REFERER . $parts[0] . $parts[1],
+		'book_link'		=> $mech->uri(),
 		'image_link'	=> $data->{image},
 		'thumb_link'	=> $data->{thumb},
 		'description'	=> $data->{description},
@@ -299,7 +280,7 @@ be forthcoming, please feel free to (politely) remind me.
 
 =head1 COPYRIGHT & LICENSE
 
-  Copyright (C) 2010,2011 Barbie for Miss Barbell Productions
+  Copyright (C) 2010-2013 Barbie for Miss Barbell Productions
 
   This module is free software; you can redistribute it and/or
   modify it under the Artistic Licence v2.
