@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 use strict;
 
-use lib './t';
+use Data::Dumper;
 use Test::More tests => 32;
 use WWW::Scraper::ISBN;
 
@@ -83,8 +83,8 @@ SKIP: {
             skip "Book unavailable", scalar(@{ $tests{$isbn} }) + 2   
                 if($error =~ /Failed to find that book/ || !$record->found);
 
-            unless($record->found) {
-                diag($record->error);
+            unless($record && $record->found) {
+                diag("error=$error, record error=".$record->error);
             }
 
             is($record->found,1);
