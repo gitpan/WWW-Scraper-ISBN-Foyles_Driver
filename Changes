@@ -1,5 +1,8 @@
 Revision history for Perl extension WWW-Scraper-ISBN-Foyles_Driver.
 
+0.07    2013-04-21
+        - updated tests following data change on website.
+
 0.06    2013-03-29
         - added Data::Dumper as a test prerequisite.
 

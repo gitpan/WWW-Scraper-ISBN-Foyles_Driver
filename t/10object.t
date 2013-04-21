@@ -17,14 +17,14 @@ my %tests = (
         [ 'is',     'isbn13',       '9781558607019'                 ],
         [ 'is',     'ean13',        '9781558607019'                 ],
         [ 'is',     'title',        'Higher-Order Perl: Transforming Programs with Programs'    ],
-        [ 'is',     'author',       'Mark Jason Dominus'            ],
-        [ 'is',     'publisher',    'Elsevier Science & Technology' ],
+        [ 'like',   'author',       qr|Dominus|                     ],
+        [ 'is',     'publisher',    'Morgan Kaufmann Publishers Inc.' ],
         [ 'is',     'pubdate',      '28/03/2005'                    ],
         [ 'is',     'binding',      'Paperback'                     ],
         [ 'like',   'image_link',   qr|http://images.foyles.co.uk/large/books/img[/\d]+.jpg|    ],
         [ 'like',   'thumb_link',   qr|http://images.foyles.co.uk/large/books/img[/\d]+.jpg|    ],
         [ 'like',   'description',  qr|Most Perl programmers were originally trained as C and Unix programmers,| ],
-        [ 'is',     'book_link',    q|http://www.foyles.co.uk/witem/computing-it/higherorder-perl-transforming,mark-jason-dominus-9781558607019| ]
+        [ 'like',   'book_link',    qr|http://www.foyles.co.uk/witem/computing-it/higherorder-perl-transforming.*?9781558607019| ]
     ],
     '9780571239566' => [
         [ 'is',     'isbn',         '9780571239566'                 ],
@@ -118,7 +118,7 @@ sub pingtest {
 
     eval { system($cmd) }; 
     if($@) {                # can't find ping, or wrong arguments?
-        diag();
+        diag($@);
         return 1;
     }
 
