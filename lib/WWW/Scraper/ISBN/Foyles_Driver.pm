@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use vars qw($VERSION @ISA);
-$VERSION = '0.07';
+$VERSION = '0.08';
 
 #--------------------------------------------------------------------------
 
@@ -118,14 +118,15 @@ sub search {
     ($data->{title})        = $html =~ m!<div class="BookTitle">\s*<span itemprop="name">([^<]+)</span>!si;
     ($data->{author})       = $html =~ m!<div class="Author">\s*<a class="Author" href="[^"]+">([^<]+)</a>!si;
     ($data->{binding})      = $html =~ m!<span class="ListItem">Type: <strong>([^<]+)</strong></span>!si;
-    ($data->{publisher})    = $html =~ m!<span class="ListItem">Publisher: <strong><span itemprop="brand">([^<]+)</span></strong></span>!si;
-    ($data->{pubdate})      = $html =~ m!<span class="ListItem">Publication Date: <strong>([^<]+)</strong></span>!si;
+    ($data->{publisher})    = $html =~ m!<span class="ListItem">Publisher: <strong><span itemprop="publisher">([^<]+)</span></strong></span>!si;
+    ($data->{pubdate})      = $html =~ m!<span class="ListItem">Publication Date: <strong><meta itemprop="datePublished" content="[^"]+">([^<]+)</strong></span>!si;
     ($data->{isbn13})       = $html =~ m!<span class="ListItem">ISBN-13: <strong><span itemprop="identifier" content="isbn:([^"]+)">!si;
     ($data->{description})  = $html =~ m!<span itemprop="description">([^<]+)!si;
     ($data->{image})        = $html =~ m!<div class="BookCover">\s*<img.*?src="([^"]+)"[^>]+>!;
 
     $data->{thumb}          = $data->{image};
     $data->{isbn10}         = $self->convert_to_isbn10($ean);
+    $data->{isbn13}         = $ean;
 
     for(qw(publisher)) {
         next    unless($data->{$_});

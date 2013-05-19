@@ -1,5 +1,10 @@
 Revision history for Perl extension WWW-Scraper-ISBN-Foyles_Driver.
 
+0.08    2013-05-19
+        - fixed return of ISBN-13 values.
+        - updated patterns for binding, publisher and pubdatre following
+          website changes.
+
 0.07    2013-04-21
         - updated tests following data change on website.
 
