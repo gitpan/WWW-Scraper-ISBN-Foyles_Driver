@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:                   WWW-Scraper-ISBN-Foyles_Driver
-version:                0.09
+version:                0.10
 abstract:               Search driver for the Foyles online book catalog
 author:
   - Barbie <barbie@cpan.org>
@@ -27,7 +27,7 @@ build_requires:
 provides:
   WWW::Scraper::ISBN::Foyles_Driver:
     file:     lib/WWW/Scraper/ISBN/Foyles_Driver.pm
-    version:  0.09
+    version:  0.10
 no_index:
   directory:
     - t
@@ -36,6 +36,7 @@ no_index:
 resources:
   license:    http://www.perlfoundation.org/artistic_license_2_0
   bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=WWW-Scraper-ISBN-Foyles_Driver
+  repository: http://github.com/barbie/www-scraper-isbn-foyles_driver
 
 meta-spec:
    version:   1.4

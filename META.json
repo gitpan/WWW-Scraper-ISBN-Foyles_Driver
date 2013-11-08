@@ -1,6 +1,6 @@
 {
     "name": "WWW-Scraper-ISBN-Foyles_Driver",
-    "version": "0.09",
+    "version": "0.10",
     "abstract": "Search driver for the Foyles online book catalog",
     "author": ["Barbie <barbie@cpan.org>"],
 
@@ -45,7 +45,7 @@
     "provides": {
         "WWW::Scraper::ISBN::Foyles_Driver": {
             "file": "lib/WWW/Scraper/ISBN/Foyles_Driver.pm",
-            "version": "0.09"
+            "version": "0.10"
         }
     },
     "no_index": {
@@ -54,6 +54,11 @@
 
     "resources": {
         "license": "http://www.perlfoundation.org/artistic_license_2_0",
-        "bugtracker": { "web": "http://rt.cpan.org/Public/Dist/Display.html?Name=WWW-Scraper-ISBN-Foyles_Driver" }
+        "bugtracker": { "web": "http://rt.cpan.org/Public/Dist/Display.html?Name=WWW-Scraper-ISBN-Foyles_Driver" },
+        "repository": {
+            "url": "git://github.com/barbie/www-scraper-isbn-foyles_driver.git",
+            "web": "http://github.com/barbie/www-scraper-isbn-foyles_driver",
+            "type": "git"
+        }
     }
 }

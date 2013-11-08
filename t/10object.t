@@ -36,10 +36,10 @@ my %tests = (
         [ 'is',     'publisher',    'Faber and Faber'               ],
         [ 'is',     'pubdate',      '04/10/2007'                    ],
         [ 'is',     'binding',      'Paperback'                     ],
-        [ 'like',   'image_link',   qr|http://images.foyles.co.uk/large/books/img[/\d]+.jpg|    ],
-        [ 'like',   'thumb_link',   qr|http://images.foyles.co.uk/large/books/img[/\d]+.jpg|    ],
+        [ 'like',   'image_link',   qr!http://(images.foyles.co.uk/large/books/img[/\d]+.jpg|images.alibris.com/isbn/[/\d]+.gif)!    ],
+        [ 'like',   'thumb_link',   qr!http://(images.foyles.co.uk/large/books/img[/\d]+.jpg|images.alibris.com/isbn/[/\d]+.gif)!    ],
         [ 'like',   'description',  qr|Ian Curtis left behind a legacy rich in artistic genius| ],
-        [ 'is',     'book_link',    q|http://www.foyles.co.uk/witem/biography/touching-from-a-distance,deborah-curtis-9780571239566| ]
+        [ 'like',   'book_link',    qr!http://www.foyles.co.uk/(witem/biography|mpitem/marketplace)/touching-from-a-distance,deborah-curtis-9780571239566! ]
     ],
 );
 
