@@ -1,6 +1,12 @@
 Revision history for WWW-Scraper-ISBN-Foyles_Driver
 ===================================================
 
+0.11    2014-06-15
+        - fixed distribution name in META.
+        - upgrade to WWW-Scraper-ISBN-1.00.
+        - conversion routines now moved to WWW::Scraper::ISBN::Driver.
+        - reworked test failure checks
+
 0.10    2013-11-08
         - added git repository links to metadata.
         - updated links for Touching From A Distance.
