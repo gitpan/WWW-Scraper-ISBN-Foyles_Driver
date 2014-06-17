@@ -15,7 +15,7 @@ WriteMakefile(
     PREREQ_PM           => {
 
         # prereqs
-        'WWW::Scraper::ISBN'            => '0.25',
+        'WWW::Mechanize'                => '1.60',
         'WWW::Scraper::ISBN'            => '1.00',
         'WWW::Scraper::ISBN::Driver'    => '1.00',
 
