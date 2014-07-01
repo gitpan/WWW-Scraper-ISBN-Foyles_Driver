@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use vars qw($VERSION @ISA);
-$VERSION = '0.12';
+$VERSION = '0.13';
 
 #--------------------------------------------------------------------------
 
@@ -37,7 +37,8 @@ use WWW::Mechanize;
 ###########################################################################
 # Constants
 
-use constant	REFERER	=> 'http://www.foyles.co.uk';
+my $REFERER	    = 'http://www.foyles.co.uk';
+my $FORMNAME    = 'aspnetForm';
 
 #--------------------------------------------------------------------------
 
@@ -93,11 +94,17 @@ sub search {
     $mech->agent_alias( 'Windows IE 6' );
     $mech->add_header( 'Accept-Encoding' => undef );
 
-    eval { $mech->get( REFERER ) };
+    eval { $mech->get( $REFERER ) };
     return $self->handler("The Foyles website appears to be unavailable.")
 	    if($@ || !$mech->success() || !$mech->content());
 
-    $mech->form_name( 'aspnetForm' );
+    my @forms = $mech->forms;
+    my %forms = map {$_->attr('name') => 1} @forms;
+
+    return $self->handler("The Foyles website appears to be broken [".join(',',keys %forms)."].")
+	    unless($forms{$FORMNAME});
+
+    $mech->form_name( $FORMNAME );
     $mech->field( 'ctl00$txtTerm', $ean );
     $mech->field( '__EVENTTARGET', 'ctl00$LinkBtnQuickSearchBy' );
     $mech->field( '__EVENTARGUMENT', '' );
