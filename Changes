@@ -1,8 +1,11 @@
 Revision history for WWW-Scraper-ISBN-Foyles_Driver
 ===================================================
 
+0.15    2014-07-26
+        - allow skip when website unavailable, catch other errors.
+
 0.14    2014-07-16
-        - website have new error message when book not found.
+        - website has new error message when book not found.
         - extended test suite.
 
 0.13    2014-07-01
