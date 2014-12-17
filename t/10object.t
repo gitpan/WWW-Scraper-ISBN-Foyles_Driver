@@ -11,35 +11,35 @@ my $DRIVER          = 'Foyles';
 my $CHECK_DOMAIN    = 'www.google.com';
 
 my %tests = (
-    '1558607013' => [
-        [ 'is',     'isbn',         '9781558607019'                 ],
-        [ 'is',     'isbn10',       '1558607013'                    ],
-        [ 'is',     'isbn13',       '9781558607019'                 ],
-        [ 'is',     'ean13',        '9781558607019'                 ],
-        [ 'is',     'title',        'Higher-Order Perl: Transforming Programs with Programs'    ],
-        [ 'like',   'author',       qr|Dominus|                     ],
-        [ 'is',     'publisher',    'Morgan Kaufmann Publishers Inc.' ],
-        [ 'is',     'pubdate',      '28/03/2005'                    ],
+    '1118013840' => [
+        [ 'is',     'isbn',         '9781118013847'                 ],
+        [ 'is',     'isbn10',       '1118013840'                    ],
+        [ 'is',     'isbn13',       '9781118013847'                 ],
+        [ 'is',     'ean13',        '9781118013847'                 ],
+        [ 'is',     'title',        'Beginning Perl'                ],
+        [ 'is',     'author',       q|Curtis 'Ovid' Poe|            ],
+        [ 'is',     'publisher',    'John Wiley & Sons Inc'         ],
+        [ 'is',     'pubdate',      '19/09/2012'                    ],
         [ 'is',     'binding',      'Paperback'                     ],
-        [ 'like',   'image_link',   qr|http://images.foyles.co.uk/large/books/img[/\d]+.jpg|    ],
-        [ 'like',   'thumb_link',   qr|http://images.foyles.co.uk/large/books/img[/\d]+.jpg|    ],
-        [ 'like',   'description',  qr|Most Perl programmers were originally trained as C and Unix programmers,| ],
-        [ 'like',   'book_link',    qr|http://www.foyles.co.uk/witem/computing-it/higherorder-perl-transforming.*?9781558607019| ]
+        [ 'like',   'image_link',   qr|http://images.foyles.co.uk/large/books/img[/\d]+.jpg|        ],
+        [ 'like',   'thumb_link',   qr|http://images.foyles.co.uk/large/books/img[/\d]+.jpg|        ],
+        [ 'like',   'description',  qr|Everything beginners need to start programming with Perl|    ],
+        [ 'like',   'book_link',    qr|http://www.foyles.co.uk/witem/computing-it/beginning-perl,curtis-ovid-poe-9781118013847| ]
     ],
-    '9780571239566' => [
-        [ 'is',     'isbn',         '9780571239566'                 ],
-        [ 'is',     'isbn10',       '0571239560'                    ],
-        [ 'is',     'isbn13',       '9780571239566'                 ],
-        [ 'is',     'ean13',        '9780571239566'                 ],
+    '9780571313600' => [
+        [ 'is',     'isbn',         '9780571313600'                 ],
+        [ 'is',     'isbn10',       '0571313604'                    ],
+        [ 'is',     'isbn13',       '9780571313600'                 ],
+        [ 'is',     'ean13',        '9780571313600'                 ],
         [ 'is',     'title',        'Touching from a Distance'      ],
         [ 'is',     'author',       'Deborah Curtis'                ],
-        [ 'is',     'publisher',    'Faber and Faber'               ],
-        [ 'is',     'pubdate',      '04/10/2007'                    ],
+        [ 'like',   'publisher',    qr|Faber.*?Faber|               ],
+        [ 'is',     'pubdate',      '02/10/2014'                    ],
         [ 'is',     'binding',      'Paperback'                     ],
         [ 'like',   'image_link',   qr!http://(images.foyles.co.uk/large/books/img[/\d]+.jpg|images.alibris.com/isbn/[/\d]+.gif)!    ],
         [ 'like',   'thumb_link',   qr!http://(images.foyles.co.uk/large/books/img[/\d]+.jpg|images.alibris.com/isbn/[/\d]+.gif)!    ],
         [ 'like',   'description',  qr|Ian Curtis left behind a legacy rich in artistic genius| ],
-        [ 'like',   'book_link',    qr!http://www.foyles.co.uk/(witem/biography|mpitem/marketplace)/touching-from-a-distance,deborah-curtis-9780571239566! ]
+        [ 'like',   'book_link',    qr!http://www.foyles.co.uk/witem/biography/touching-from-a-distance,deborah-curtis-9780571313600! ]
     ],
 );
 
